@@ -1,29 +1,59 @@
 import { useEffect, useRef, useState } from "react";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import { transcribeSpeech } from "@/functions/transcribeSpeech";
+import { Ionicons } from "@expo/vector-icons";
+import { recordSpeech } from "@/functions/recordSpeech";
+import useWebFocus from "@/hooks/useWebFocus";
 
 export default function Speech() {
   const [transcribedSpeech, setTranscribedSpeech] = useState("");
   const [isRecording, setIsRecording] = useState(false);
   const [isTranscribing, setIsTranscribing] = useState(false);
-  //const isWebFocused = useWebFocus();
+  const isWebFocused = useWebFocus();
   const audioRecordingRef = useRef(new Audio.Recording());
   const webAudioPermissionsRef = useRef<MediaStream | null>(null);
 
-  
+  useEffect(() => {
+    if (isWebFocused) {
+      const getMicAccess = async () => {
+        const permissions = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        webAudioPermissionsRef.current = permissions;
+      };
+      if (!webAudioPermissionsRef.current) getMicAccess();
+    } else {
+      if (webAudioPermissionsRef.current) {
+        webAudioPermissionsRef.current
+          .getTracks()
+          .forEach((track) => track.stop());
+        webAudioPermissionsRef.current = null;
+      }
+    }
+  }, [isWebFocused]);
+
   const startRecording = async () => {
     setIsRecording(true);
-
+    await recordSpeech(
+      audioRecordingRef,
+      setIsRecording,
+      !!webAudioPermissionsRef.current
+    );
   };
 
   const stopRecording = async () => {
     setIsRecording(false);
     setIsTranscribing(true);
-
-    setIsTranscribing(false);
+    try {
+      const speechTranscript = await transcribeSpeech(audioRecordingRef);
+      setTranscribedSpeech(speechTranscript || "");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsTranscribing(false);
+    }
   };
-  
 
   return (
     <SafeAreaView>
@@ -50,8 +80,8 @@ export default function Speech() {
               ...styles.microphoneButton,
               opacity: isRecording || isTranscribing ? 0.5 : 1,
             }}
-            onPressIn={() =>{}}
-            onPressOut={() =>{}}
+            onPressIn={startRecording}
+            onPressOut={stopRecording}
             disabled={isRecording || isTranscribing}
           >
             {isRecording ? (
