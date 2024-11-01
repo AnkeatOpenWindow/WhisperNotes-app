@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
-import { analyzeText } from "@/components/AIServices";
+//import { analyzeText } from "@/components/AIServices"; // Your service
 import SummaryButton from "@/components/SummaryButton"; // Import your custom button
 
 interface AnalyzeSyntaxResponse {
@@ -12,23 +12,9 @@ interface AnalyzeSyntaxResponse {
 }
 
 export default function Summarize() {
-  const [inputText, setInputText] = useState<string>('');
+  const [inputText, setInputText] = useState<string>(''); 
   const [summaryResult, setSummaryResult] = useState<AnalyzeSyntaxResponse | null>(null);
 
-  const handleSummarize = async () => {
-    try {
-      const result = await analyzeText(inputText);
-      console.log('Sentences:', result.sentences);
-      if (Array.isArray(result.sentences) && result.sentences.length > 0) {
-        console.log('First sentence content:', result.sentences[0].text.content);
-      } else {
-        console.log('No sentences found in the response.');
-      }
-      setSummaryResult(result);
-    } catch (error) {
-      console.error('Error while summarizing:', error);
-    }
-  };
 
   return (
     <View style={styles.container}>
@@ -42,8 +28,8 @@ export default function Summarize() {
         onChangeText={setInputText}
         multiline
       />
-      {/*<SummaryButton title="Summarize your note" />*/}
 
+      <SummaryButton title="Summarize your note" onPress={() =>{}} />
 
       {summaryResult && (
         <ScrollView style={styles.resultContainer}>
