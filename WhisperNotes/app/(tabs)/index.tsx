@@ -1,70 +1,94 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet,SafeAreaView, ScrollView } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
+export default function Index() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <SafeAreaView>
+      <ScrollView style={styles.mainScrollContainer}>
+      <View style={styles.mainInnerContainer}>
+        <View style={styles.container}>
+          <Text style={styles.welcomeText}>Welcome to WhisperNotes!</Text>
+          <Text style={styles.description}>
+            WhisperNotes is an intuitive app designed to help you transcribe your spoken words into text
+            then saves them as notes. From there you can manage your notes effortlessly. 
+            Here's how to use the app:
+          </Text>
+
+          <Text style={styles.sectionTitle}>Using the App:</Text>
+          <Text style={styles.step}>
+            1. Navigate to the "Speech-to-Text" screen using the tab navigation at the bottom.
+          </Text>
+          <Text style={styles.step}>
+            2. On the "Speech-to-Text" page, you'll find a microphone button. Press and hold the button
+            to record your voice. Release it when you're done speaking.
+          </Text>
+          <Text style={styles.step}>
+            3. Your transcribed text will appear in the section labeled "Your transcribed text will be
+            shown here."
+          </Text>
+          <Text style={styles.step}>
+            4. Your transcription is automatically saved to the "Notes" screen, accessible via the tab
+            navigation.
+          </Text>
+          <Text style={styles.step}>
+            5. On the "Notes" page, you'll see all your recordings. Tap any note to view its details,
+            including the timestamp and the transcription.
+          </Text>
+        </View>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  mainScrollContainer: {
+    padding: 20,
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#25292e",
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#25292e",
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  mainInnerContainer: {
+    gap: 75,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    flexGrow: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+
+  },
+  welcomeText: {
+    fontSize: 35,
+    padding: 5,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+    marginTop: 50,
+  },
+  description: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginVertical: 10,
+  },
+  step: {
+    fontSize: 16,
+    color: '#fff',
+    marginBottom: 10,
   },
 });
