@@ -1,23 +1,61 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-//import { collection, onSnapshot, Timestamp } from "firebase/firestore";
-//import { db } from '../../firebaseConfig';
+import { collection, onSnapshot, Timestamp } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+//import { RootStackParamList } from "../types"; // Import your types
 
+// Import the correct navigation prop types
+//import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
+
+type Note = {
+  id: string;
+  timestamp: Timestamp;
+  text: string; // Assuming 'text' is also a field in your Firestore document
+};
+
+//type NotesScreenNavigationProp = StackNavigationProp<RootStackParamList, "notesdetails">;
 
 export default function Notes() {
-  
+  //const navigation = useNavigation<NotesScreenNavigationProp>();
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "transcripts"), (snapshot) => {
+      const fetchedNotes = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Note[];
+      setNotes(fetchedNotes);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  //const handleNotePress = (noteId: string) => {
+    //navigation.navigate("notesdetails", { noteId }); // Pass the note ID as a parameter
+  //};
 
   return (
     <SafeAreaView>
       <ScrollView style={styles.mainScrollContainer}>
         <View style={styles.container}>
           <Text style={styles.text}>Your Notes</Text>
-         
+          {loading ? (
+            <ActivityIndicator size="large" color="#557d9d" />
+          ) : (
             <View style={styles.grid}>
-              
+              {notes.map((note) => (
+                <TouchableOpacity key={note.id} style={styles.button} onPress={() =>{}}>
+                  <Ionicons name="folder-open" size={100} color="#557d9d" />
+                  <Text style={styles.buttonText}>{new Date(note.timestamp.seconds * 1000).toLocaleString()}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
-          
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
