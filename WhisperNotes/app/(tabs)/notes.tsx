@@ -3,22 +3,20 @@ import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, To
 import { Ionicons } from "@expo/vector-icons";
 import { collection, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-//import { RootStackParamList } from "../types"; // Import your types
-
-// Import the correct navigation prop types
-//import { StackNavigationProp } from "@react-navigation/stack";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"; // Correct import for Stack Navigation
 import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../types";
 
 type Note = {
   id: string;
   timestamp: Timestamp;
-  text: string; // Assuming 'text' is also a field in your Firestore document
+  text: string;
 };
 
-//type NotesScreenNavigationProp = StackNavigationProp<RootStackParamList, "notesdetails">;
+type NotesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "notesdetails">;
 
 export default function Notes() {
-  //const navigation = useNavigation<NotesScreenNavigationProp>();
+  const navigation = useNavigation<NotesScreenNavigationProp>();
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,9 +33,9 @@ export default function Notes() {
     return () => unsubscribe();
   }, []);
 
-  //const handleNotePress = (noteId: string) => {
-    //navigation.navigate("notesdetails", { noteId }); // Pass the note ID as a parameter
-  //};
+  const handleNotePress = (noteId: string) => {
+    navigation.navigate("notesdetails", { noteId });
+  };
 
   return (
     <SafeAreaView>
@@ -49,7 +47,7 @@ export default function Notes() {
           ) : (
             <View style={styles.grid}>
               {notes.map((note) => (
-                <TouchableOpacity key={note.id} style={styles.button} onPress={() =>{}}>
+                <TouchableOpacity key={note.id} style={styles.button} onPress={() => handleNotePress(note.id)}>
                   <Ionicons name="folder-open" size={100} color="#557d9d" />
                   <Text style={styles.buttonText}>{new Date(note.timestamp.seconds * 1000).toLocaleString()}</Text>
                 </TouchableOpacity>
