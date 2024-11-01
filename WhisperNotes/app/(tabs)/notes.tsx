@@ -26,10 +26,14 @@ export default function Notes() {
         id: doc.id,
         ...doc.data(),
       })) as Note[];
+  
+      // Sort notes by timestamp in descending order (latest first)
+      fetchedNotes.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+  
       setNotes(fetchedNotes);
       setLoading(false);
     });
-
+  
     return () => unsubscribe();
   }, []);
 
