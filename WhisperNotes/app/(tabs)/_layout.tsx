@@ -21,7 +21,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="notes"
+        name="index"
         options={{
           headerShown: false,
           title: 'Notes',
@@ -41,7 +41,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="info"
         options={{
           headerShown: false,
           title: 'Info',

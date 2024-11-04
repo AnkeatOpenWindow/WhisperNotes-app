@@ -1,45 +1,70 @@
-import React from 'react';
-import { View, Text, StyleSheet,SafeAreaView, ScrollView } from 'react-native';
+import React, { useEffect, useState } from "react"; 
+import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, Dimensions } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import { collection, onSnapshot, Timestamp } from "firebase/firestore";
+import { db } from "../../firebaseConfig";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack"; // Correct import for Stack Navigation
+import { useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../types";
 
+type Note = {
+  id: string;
+  timestamp: Timestamp;
+  text: string;
+  title?: string; // Optional title field
+};
+
+type NotesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "notesdetails">;
 
 export default function Index() {
+  const navigation = useNavigation<NotesScreenNavigationProp>();
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "transcripts"), (snapshot) => {
+      const fetchedNotes = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      })) as Note[];
+
+      // Sort notes by timestamp in descending order (latest first)
+      fetchedNotes.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+
+      setNotes(fetchedNotes);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const handleNotePress = (noteId: string) => {
+    navigation.navigate("notesdetails", { noteId });
+  };
+
   return (
     <SafeAreaView>
       <ScrollView style={styles.mainScrollContainer}>
-      <View style={styles.mainInnerContainer}>
         <View style={styles.container}>
-          <Text style={styles.welcomeText}>Welcome to WhisperNotes!</Text>
-          <Text style={styles.description}>
-            WhisperNotes is an intuitive app designed to help you transcribe your spoken words into text
-            then saves them as notes. From there you can manage your notes effortlessly. 
-            Here's how to use the app:
-          </Text>
-
-          <Text style={styles.sectionTitle}>Using the App:</Text>
-          <Text style={styles.step}>
-            1. Navigate to the "Speech-to-Text" screen using the tab navigation at the bottom.
-          </Text>
-          <Text style={styles.step}>
-            2. On the "Speech-to-Text" page, you'll find a microphone button. Press and hold the button
-            to record your voice. Release it when you're done speaking.
-          </Text>
-          <Text style={styles.step}>
-            3. Your transcribed text will appear in the section labeled "Your transcribed text will be
-            shown here."
-          </Text>
-          <Text style={styles.step}>
-            4. Your transcription is automatically saved to the "Notes" screen, accessible via the tab
-            navigation.
-          </Text>
-          <Text style={styles.step}>
-            5. On the "Notes" page, you'll see all your recordings. Tap any note to view its details,
-            including the timestamp and the transcription.
-          </Text>
-        </View>
+          <Text style={styles.text}>Your Notes</Text>
+          {loading ? (
+            <ActivityIndicator size="large" color="#557d9d" />
+          ) : (
+            <View style={styles.grid}>
+              {notes.map((note) => (
+                <TouchableOpacity key={note.id} style={styles.button} onPress={() => handleNotePress(note.id)}>
+                  <Ionicons name="folder-open" size={100} color="#557d9d" />
+                  {/* Check if title exists, else display timestamp */}
+                  <Text style={styles.buttonText}>
+                    {note.title ? note.title : new Date(note.timestamp.seconds * 1000).toLocaleString()}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
-
   );
 }
 
@@ -56,39 +81,31 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#25292e",
   },
-  mainInnerContainer: {
-    gap: 75,
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    flexGrow: 1,
-    flexDirection: "row",
-    flexWrap: "wrap",
-
-  },
-  welcomeText: {
-    fontSize: 35,
-    padding: 5,
-    fontWeight: "bold",
-    textAlign: "center",
+  text: {
     color: "white",
+    fontSize: 24,
+    marginBottom: 20,
+    textAlign: "center",
     marginTop: 50,
   },
-  description: {
-    fontSize: 16,
-    color: '#fff',
+  grid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
     marginBottom: 20,
-    textAlign: 'center',
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginVertical: 10,
+  button: {
+    padding: 20,
+    borderRadius: 10,
+    margin: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    width: Dimensions.get("window").width / 2.5,
   },
-  step: {
+  buttonText: {
+    color: "white",
+    marginTop: 10,
     fontSize: 16,
-    color: '#fff',
-    marginBottom: 10,
+    textAlign: "center",
   },
 });
