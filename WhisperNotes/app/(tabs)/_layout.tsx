@@ -53,16 +53,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="summarize"
-        options={{
-          headerShown: false,
-          title: 'Summarize',
-          tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'list' : 'list-outline'} color={color} size={24} />
-          ),
-        }}
-      />
     </Tabs>
   );
 }

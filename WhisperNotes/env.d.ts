@@ -1,4 +1,4 @@
 declare module '@env' {
   export const API_KEY: string;
-  // Add other environment variables here if you have more
+  export const OPENAI_API_KEY: string;
 }
