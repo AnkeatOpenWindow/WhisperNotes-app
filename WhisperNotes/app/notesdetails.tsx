@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, Button, Alert } from "react-native";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, Button, Alert, TextInput, TouchableOpacity } from "react-native";
 import { useRoute, RouteProp } from "@react-navigation/native";
 import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import axios from 'axios';
@@ -7,11 +7,13 @@ import { db } from "../firebaseConfig";
 import { OPENAI_API_KEY } from '@env';
 import { RootStackParamList } from "./types"; // Import your types
 import SummaryButton from "@/components/SummaryButton";
+import SaveButton from "@/components/SaveButton";
 
 type Note = {
   timestamp: Timestamp;
   text: string;
   summarizedText?: string; // Field for the saved summary
+  title?: string; // Optional title field
 };
 
 export default function NoteDetails() {
@@ -19,6 +21,9 @@ export default function NoteDetails() {
   const { noteId } = route.params;
   const [note, setNote] = useState<Note | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isEditingTitle, setIsEditingTitle] = useState(false); // New state for editing mode
+  const [newTitle, setNewTitle] = useState(""); // New state to hold the typed title
+  const [showSaveButton, setShowSaveButton] = useState(false); // Show save button on input
 
   useEffect(() => {
     const fetchNote = async () => {
@@ -31,6 +36,32 @@ export default function NoteDetails() {
 
     fetchNote();
   }, [noteId]);
+
+  // Handle save button click
+  const saveTitle = async () => {
+    if (!newTitle.trim()) {
+      Alert.alert("Error", "Title cannot be empty.");
+      return;
+    }
+
+    try {
+      // Save new title to Firestore
+      await updateDoc(doc(db, "transcripts", noteId), { title: newTitle });
+
+      // Update local state
+      setNote(prevNote => prevNote ? { ...prevNote, title: newTitle } : null);
+
+      // Exit editing mode
+      setIsEditingTitle(false);
+      setShowSaveButton(false);
+
+      // Show success message
+      Alert.alert("Success", "Title has been updated.");
+    } catch (error) {
+      console.error("Error saving title:", error);
+      Alert.alert("Error", "Failed to save the title.");
+    }
+  };
 
   const summarizeText = async (text: string) => {
     try {
@@ -79,7 +110,30 @@ export default function NoteDetails() {
             <ActivityIndicator size="large" color="#557d9d" />
           ) : note ? (
             <View style={styles.grid}>
-              <Text style={styles.title}>Title</Text>
+              {/* Title section */}
+              {isEditingTitle ? (
+                // Show TextInput when editing
+                <View style={styles.titleContainer}>
+                  <TextInput
+                    style={styles.titleInput}
+                    value={newTitle}
+                    onChangeText={(text) => {
+                      setNewTitle(text);
+                      setShowSaveButton(true); // Show save button once user types
+                    }}
+                    placeholder="Enter title"
+                    autoFocus
+                  />
+                  {showSaveButton && (
+                    <SaveButton title="Save" onPress={saveTitle} />
+                  )}
+                </View>
+              ) : (
+                // Show Text and make it tappable to enable editing
+                <TouchableOpacity onPress={() => setIsEditingTitle(true)}>
+                  <Text style={styles.title}>{note.title || "Title"}</Text>
+                </TouchableOpacity>
+              )}
 
               <Text style={styles.subtitle}>What was recorded:</Text>
               <View style={styles.textContainer}>
@@ -127,6 +181,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#25292e",
   },
+  titleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    marginBottom: 20,
+  },
   title: {
     width: "100%",
     color: "white",
@@ -134,7 +195,15 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     textAlign: "left",
   },
+  titleInput: {
+    color: "white",
+    fontSize: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "white",
+    flex: 1,
+  },
   subtitle: {
+    width: "100%",
     color: "white",
     fontSize: 20,
     marginBottom: 20,

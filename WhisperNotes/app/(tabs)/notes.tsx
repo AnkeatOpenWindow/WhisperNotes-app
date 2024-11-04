@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react"; 
 import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, Dimensions } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { collection, onSnapshot, Timestamp } from "firebase/firestore";
@@ -11,6 +11,7 @@ type Note = {
   id: string;
   timestamp: Timestamp;
   text: string;
+  title?: string; // Optional title field
 };
 
 type NotesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "notesdetails">;
@@ -26,14 +27,14 @@ export default function Notes() {
         id: doc.id,
         ...doc.data(),
       })) as Note[];
-  
+
       // Sort notes by timestamp in descending order (latest first)
       fetchedNotes.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
-  
+
       setNotes(fetchedNotes);
       setLoading(false);
     });
-  
+
     return () => unsubscribe();
   }, []);
 
@@ -53,7 +54,10 @@ export default function Notes() {
               {notes.map((note) => (
                 <TouchableOpacity key={note.id} style={styles.button} onPress={() => handleNotePress(note.id)}>
                   <Ionicons name="folder-open" size={100} color="#557d9d" />
-                  <Text style={styles.buttonText}>{new Date(note.timestamp.seconds * 1000).toLocaleString()}</Text>
+                  {/* Check if title exists, else display timestamp */}
+                  <Text style={styles.buttonText}>
+                    {note.title ? note.title : new Date(note.timestamp.seconds * 1000).toLocaleString()}
+                  </Text>
                 </TouchableOpacity>
               ))}
             </View>
