@@ -21,15 +21,12 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="notes"
         options={{
           headerShown: false,
-          title: 'Home',
+          title: 'Notes',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons
-              name={focused ? 'home-sharp' : 'home-outline'}
-              color={color}
-              size={24} />
+            <Ionicons name={focused ? 'folder-open' : 'folder-open-outline'} color={color} size={24} />
           ),
         }}
       />
@@ -44,12 +41,15 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="notes"
+        name="index"
         options={{
           headerShown: false,
-          title: 'Notes',
+          title: 'Info',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'folder-open' : 'folder-open-outline'} color={color} size={24} />
+            <Ionicons
+              name={focused ? 'information-circle' : 'information-circle-outline'}
+              color={color}
+              size={24} />
           ),
         }}
       />

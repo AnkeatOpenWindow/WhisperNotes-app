@@ -122,6 +122,7 @@ export default function NoteDetails() {
                       setShowSaveButton(true); // Show save button once user types
                     }}
                     placeholder="Enter title"
+                    placeholderTextColor="#ffffff"
                     autoFocus
                   />
                   {showSaveButton && (
