@@ -259,24 +259,19 @@ The `Development Process` is the technical implementations and functionality don
 ### Mockups
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./assets/Splash.png" alt="Image 5" width="300" style="margin-right: 10px;">
-  <img src="./assets/Notes.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Detail1.png" alt="Image 6" width="300">
+   <img src="./assets/Splash.png" alt="Image 5" width="300" style="margin-right: 50px;">
+   <img src="./assets/Notes.png" alt="Image 6" width="300">
+  
 </div>
 <br>
 <div style="display: flex; justify-content: space-between;">
-  <img src="./assets/Detail2.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Record1.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Record2.png" alt="Image 5" width="300">
+   <img src="./assets/Detail1.png" alt="Image 6" width="300" style="margin-right: 50px;">
+   <img src="./assets/Detail2.png" alt="Image 6" width="300">
 </div>
 <br>
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/7.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/8.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/9.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/10.png" alt="Image 6" width="300">
-   -->
+   <img src="./assets/Record1.png" alt="Image 6" width="300" style="margin-right: 50px;">
+   <img src="./assets/Record2.png" alt="Image 5" width="300">
 </div>
 
 <!-- VIDEO DEMONSTRATION -->
