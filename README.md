@@ -10,9 +10,8 @@
 </br>
 
 <p align="center">
-  <!-- <a href="https://github.com/AnkeatOpenWindow/WhisperNotes-app.git">
+   <a href="https://github.com/AnkeatOpenWindow/WhisperNotes-app.git">
        <img src="./assets/Logo.png" alt="Logo" width="140">
-   -->
   </a> 
 
   <h3 align="center">WhisperNotes</h3>
@@ -21,8 +20,6 @@
     This app allows a user to record what they say using Speech-to-Text. Users can view transcriptions on the Notes Page, tap on a note for details, and summarize the recorded text on the same page.<br>
     <a href="https://github.com/AnkeatOpenWindow/WhisperNotes-app.git"><strong>Explore the docs »</strong></a>
     <br>
-    <br>
-    <a href="path/to/demonstration/video">View Demo</a>
   </p>
 </p>
 
@@ -60,8 +57,10 @@
 * [Acknowledgements](#acknowledgements)
 
 ---
-
+<!--PROJECT DESCRIPTION-->
 ## About the Project
+<!-- header image of project -->
+<img src="./assets/Logo.png" alt="Logo" width="140" >
 
 ### Project Description
 
@@ -169,10 +168,8 @@ Start the Expo development server by running:
 If the users wishes to record a note that can go to the speech-to-text screen. From there they need to press and hold the mic button before speaking. After speaking they need to release the button. The Recording will then be turned into text that is saved to Firebase and stored on the Notes screen.
 
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/2.png" alt="Image 2" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/3.png" alt="Image 3" width="300">
-   -->
+  <img src="./assets/Recordingscreen1.png" alt="Recordingscreen1" width="300" style="margin-right: 10px;">
+  <img src="./assets/Recordingscreen2.png" alt="Recordingscreen2" width="300">
 </div>
 
 ### Feature 2: View Note that has been recorded.
@@ -180,10 +177,8 @@ If the users wishes to record a note that can go to the speech-to-text screen. F
 After the recording has been saved the user can head over to the Notes screen where all previous and new notes are shown. The user can then tap on the note to be able to view the recording.
 
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/4.png" alt="Image 3" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/5.png" alt="Image 4" width="300">
-   -->
+  <img src="./assets/Notesscreen.png" alt="Image 3" width="300" style="margin-right: 10px;">
+  <img src="./assets/Detailscreen1.png" alt="Image 3" width="300">
 </div>
 
 ### Feature 3: Sumirize the text that came from the recording.
@@ -191,19 +186,16 @@ After the recording has been saved the user can head over to the Notes screen wh
 At the bottom of the Note's details page there is a sumarize note's text button which if the taps the text will be sumirized and saved.
 
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/6.png" alt="Image 5" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/7.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/8.png" alt="Image 6" width="300">
-   -->
+  <img src="./assets/Detailscreen1.png" alt="Image 5" width="300" style="margin-right: 10px;">
+  <img src="./assets/Detailscreen2.png" alt="Image 6" width="300">
 </div>
 
 ### Feature 5: Name Notes.
 
 When the recording is saved it take the time stamp of when the recording was made and uses that as a defult title. In the note's detail a user can give the note a title which will then be saved and show on the Notes screen.
-<!--
-<img src="./assets/Mockups/9.png" alt="Image 7" width="300">
--->
+
+<img src="./assets/Detailscreen1.png" alt="Image 7" width="300">
+
 
 <!-- CONCEPT PROCESS -->
 <!-- Briefly explain your concept ideation process -->
@@ -214,28 +206,16 @@ Baised on the brief requirements we had to create an project using any language 
 ### Wireframes
 
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-   <!--
-  <img src="./assets/Wireframes/Splash.png" alt="Image 5" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Login.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Regester.png" alt="Image 6" height="300">
-   -->
+  <img src="./assets/Wireframe1.png" alt="Image 5" height="300" style="margin-right: 10px;">
+  <img src="./assets/Wireframe2.png" alt="Image 6" height="300" style="margin-right: 10px;">
+  <img src="./assets/Wireframe3.png" alt="Image 6" height="300">
 </div>
 <br>
 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-   <!--
-   <img src="./assets/Wireframes/Home.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Competition.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Review1.png" alt="Image 5" height="300">
-   -->
+  <img src="./assets/Wireframe4.png" alt="Image 6" height="300" style="margin-right: 10px;">
+  <img src="./assets/Wireframe5.png" alt="Image 6" height="300" style="margin-right: 10px;">
 </div>
 <br>
-<div style="display: flex; justify-content: space-between; align-items: flex-start;">
-   <!--
-   <img src="./assets/Wireframes/Review2.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Own.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframes/Profile.png" alt="Image 6" height="300" style="margin-right: 10px;">
-   -->
-</div>
 
 <!-- DEVELOPMENT PROCESS -->
 ## Development Process
@@ -279,19 +259,15 @@ The `Development Process` is the technical implementations and functionality don
 ### Mockups
 
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/1.png" alt="Image 5" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/2.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/3.png" alt="Image 6" width="300">
-   -->
+  <img src="./assets/Splash.png" alt="Image 5" width="300" style="margin-right: 10px;">
+  <img src="./assets/Notes.png" alt="Image 6" width="300" style="margin-right: 10px;">
+  <img src="./assets/Detail1.png" alt="Image 6" width="300">
 </div>
 <br>
 <div style="display: flex; justify-content: space-between;">
-   <!--
-  <img src="./assets/Mockups/4.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/5.png" alt="Image 6" width="300" style="margin-right: 10px;">
-  <img src="./assets/Mockups/6.png" alt="Image 5" width="300">
-   -->
+  <img src="./assets/Detail2.png" alt="Image 6" width="300" style="margin-right: 10px;">
+  <img src="./assets/Record1.png" alt="Image 6" width="300" style="margin-right: 10px;">
+  <img src="./assets/Record2.png" alt="Image 5" width="300">
 </div>
 <br>
 <div style="display: flex; justify-content: space-between;">
@@ -307,10 +283,9 @@ The `Development Process` is the technical implementations and functionality don
 ### Video Demonstration
 
 To see a run through of the application, click below:
-<!--
-<a href="https://drive.google.com/file/d/1UusvSPGxn4X1b71fbkst5Yv45hw0IzYY/view?usp=sharing">
-  <img src="./assets/Mockups/1.png" alt="Demo Video" width="300">
-  -->
+
+<a href="https://drive.google.com/file/d/1n4IlwFa47O2MTfharTasSnoHsR_LIJXd/view?usp=sharing">
+  <img src="./assets/Splash.png" alt="Image 5" width="300">
 </a>
 
 <!-- AUTHORS -->
