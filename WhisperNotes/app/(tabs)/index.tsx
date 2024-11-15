@@ -1,67 +1,108 @@
-import React, { useEffect, useState } from "react"; 
-import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, Dimensions } from "react-native";
+import { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View, ActivityIndicator, TouchableOpacity, } from "react-native";
+import { Audio } from "expo-av";
+import { transcribeSpeech } from "@/functions/transcribeSpeech";
 import { Ionicons } from "@expo/vector-icons";
-import { collection, onSnapshot, Timestamp } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack"; // Correct import for Stack Navigation
+import { recordSpeech } from "@/functions/recordSpeech";
+import useWebFocus from "@/hooks/useWebFocus";
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../types";
 
-type Note = {
-  id: string;
-  timestamp: Timestamp;
-  text: string;
-  title?: string; // Optional title field
-};
-
-type NotesScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "notesdetails">;
+type SpeechScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, "info">;
 
 export default function Index() {
-  const navigation = useNavigation<NotesScreenNavigationProp>();
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [transcribedSpeech, setTranscribedSpeech] = useState("");
+  const [isRecording, setIsRecording] = useState(false);
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const isWebFocused = useWebFocus();
+  const audioRecordingRef = useRef(new Audio.Recording());
+  const webAudioPermissionsRef = useRef<MediaStream | null>(null);
+  const navigation = useNavigation<SpeechScreenNavigationProp>();
+
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "transcripts"), (snapshot) => {
-      const fetchedNotes = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as Note[];
+    if (isWebFocused) {
+      const getMicAccess = async () => {
+        const permissions = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
+        webAudioPermissionsRef.current = permissions;
+      };
+      if (!webAudioPermissionsRef.current) getMicAccess();
+    } else {
+      if (webAudioPermissionsRef.current) {
+        webAudioPermissionsRef.current
+          .getTracks()
+          .forEach((track) => track.stop());
+        webAudioPermissionsRef.current = null;
+      }
+    }
+  }, [isWebFocused]);
 
-      // Sort notes by timestamp in descending order (latest first)
-      fetchedNotes.sort((a, b) => b.timestamp.seconds - a.timestamp.seconds);
+  const startRecording = async () => {
+    setIsRecording(true);
+    await recordSpeech(
+      audioRecordingRef,
+      setIsRecording,
+      !!webAudioPermissionsRef.current
+    );
+  };
 
-      setNotes(fetchedNotes);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleNotePress = (noteId: string) => {
-    navigation.navigate("notesdetails", { noteId });
+  const stopRecording = async () => {
+    setIsRecording(false);
+    setIsTranscribing(true);
+    try {
+      const speechTranscript = await transcribeSpeech(audioRecordingRef);
+      setTranscribedSpeech(speechTranscript || "");
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setIsTranscribing(false);
+    }
   };
 
   return (
     <SafeAreaView>
       <ScrollView style={styles.mainScrollContainer}>
-        <View style={styles.container}>
-          <Text style={styles.text}>Your Notes</Text>
-          {loading ? (
-            <ActivityIndicator size="large" color="#557d9d" />
-          ) : (
-            <View style={styles.grid}>
-              {notes.map((note) => (
-                <TouchableOpacity key={note.id} style={styles.button} onPress={() => handleNotePress(note.id)}>
-                  <Ionicons name="folder-open" size={100} color="#557d9d" />
-                  {/* Check if title exists, else display timestamp */}
-                  <Text style={styles.buttonText}>
-                    {note.title ? note.title : new Date(note.timestamp.seconds * 1000).toLocaleString()}
-                  </Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-          )}
+        <TouchableOpacity
+          style={styles.infoIcon}
+          onPress={() => navigation.navigate("info")}
+        >
+          <Ionicons name="information-circle-outline" size={30} color="white" />
+        </TouchableOpacity>
+        <View style={styles.mainInnerContainer}>
+          <Text style={styles.title}>Tap and hold the mic to record</Text>
+          <View style={styles.transcriptionContainer}>
+            {isTranscribing ? (
+              <ActivityIndicator size="small" color="#000" />
+            ) : (
+              <Text
+                style={{
+                  ...styles.transcribedText,
+                  color: transcribedSpeech ? "#000" : "rgb(150,150,150)",
+                }}
+              >
+                {transcribedSpeech ||
+                  "Your transcribed text will be shown here"}
+              </Text>
+            )}
+          </View>
+          <TouchableOpacity
+            style={{
+              ...styles.microphoneButton,
+              opacity: isRecording || isTranscribing ? 0.5 : 1,
+            }}
+            onPressIn={startRecording}
+            onPressOut={stopRecording}
+            disabled={isRecording || isTranscribing}
+          >
+            {isRecording ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Ionicons name="mic" size={50} color="white" />
+            )}
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -75,37 +116,54 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#25292e",
   },
-  container: {
-    flex: 1,
-    justifyContent: "center",
+  mainInnerContainer: {
+    gap: 75,
+    height: "100%",
     alignItems: "center",
-    backgroundColor: "#25292e",
-  },
-  text: {
-    color: "white",
-    fontSize: 24,
-    marginBottom: 20,
-    textAlign: "center",
-    marginTop: 50,
-  },
-  grid: {
+    justifyContent: "center",
+    flexGrow: 1,
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-around",
-    marginBottom: 20,
+    marginTop: 20,
   },
-  button: {
+  title: {
+    fontSize: 35,
+    padding: 5,
+    fontWeight: "bold",
+    textAlign: "center",
+    color: "white",
+    marginTop: 50,
+  },
+  transcriptionContainer: {
+    backgroundColor: "rgb(220,220,220)",
+    width: "100%",
+    height: 300,
     padding: 20,
-    borderRadius: 10,
-    margin: 10,
+    marginBottom: 20,
+    borderRadius: 5,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+  },
+  transcribedText: {
+    fontSize: 20,
+    padding: 5,
+    color: "#000",
+    textAlign: "left",
+    width: "100%",
+  },
+  microphoneButton: {
+    backgroundColor: "#557d9d",
+    width: 75,
+    height: 75,
+    marginTop: 100,
+    borderRadius: 50,
     alignItems: "center",
     justifyContent: "center",
-    width: Dimensions.get("window").width / 2.5,
   },
-  buttonText: {
-    color: "white",
-    marginTop: 10,
-    fontSize: 16,
-    textAlign: "center",
+  infoIcon: {
+    position: "absolute",
+    top: 20,
+    right: 20,
   },
 });

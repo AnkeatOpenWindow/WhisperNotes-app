@@ -24,19 +24,19 @@ export default function TabLayout() {
         name="index"
         options={{
           headerShown: false,
-          title: 'Notes',
+          title: 'Speech to text',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'folder-open' : 'folder-open-outline'} color={color} size={24} />
+            <Ionicons name={focused ? 'mic' : 'mic-outline'} color={color} size={24} />
           ),
         }}
       />
       <Tabs.Screen
-        name="speech"
+        name="notes"
         options={{
           headerShown: false,
-          title: 'Speech-to-text',
+          title: 'Notes',
           tabBarIcon: ({ color, focused }) => (
-            <Ionicons name={focused ? 'mic' : 'mic-outline'} color={color} size={24} />
+            <Ionicons name={focused ? 'folder-open' : 'folder-open-outline'} color={color} size={24} />
           ),
         }}
       />
