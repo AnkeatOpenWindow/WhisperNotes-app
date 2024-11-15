@@ -11,7 +11,7 @@
 
 <p align="center">
    <a href="https://github.com/AnkeatOpenWindow/WhisperNotes-app.git">
-       <img src="./assets/Logo.png" alt="Logo" width="140">
+       <img src="./assets/Logo.png" alt="Logo" width="200">
   </a> 
 
   <h3 align="center">WhisperNotes</h3>
@@ -35,23 +35,15 @@
   * [How to Install](#how-to-install)
 * [Features and Functionality](#features-and-functionality)
 * [Concept Process](#concept-process)
-  * [Ideation](#ideation)
-  * [Wireframes](#wireframes)
-  * [User-flow](#user-flow)
 * [Development Process](#development-process)
   * [Implementation Process](#implementation-process)
     * [Highlights](#highlights)
     * [Challenges](#challenges)
-  * [Reviews and Testing](#peer-reviews)
-    * [Feedback from Reviews](#feedback-from-reviews)
-    * [Unit Tests](#unit-tests)
   * [Future Implementation](#future-implementation)
 * [Final Outcome](#final-outcome)
   * [Mockups](#mockups)
   * [Video Demonstration](#video-demonstration)
 * [Conclusion](#conclusion)
-* [Roadmap](#roadmap)
-* [Contributing](#contributing)
 * [License](#license)
 * [Contact](#contact)
 * [Acknowledgements](#acknowledgements)
@@ -168,8 +160,7 @@ Start the Expo development server by running:
 If the users wishes to record a note that can go to the speech-to-text screen. From there they need to press and hold the mic button before speaking. After speaking they need to release the button. The Recording will then be turned into text that is saved to Firebase and stored on the Notes screen.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./assets/Recordingscreen1.png" alt="Recordingscreen1" width="300" style="margin-right: 10px;">
-  <img src="./assets/Recordingscreen2.png" alt="Recordingscreen2" width="300">
+  <img src="./assets/Recordingscreen.jpg" alt="Recordingscreen" width="300" style="margin-right: 10px;">
 </div>
 
 ### Feature 2: View Note that has been recorded.
@@ -177,8 +168,8 @@ If the users wishes to record a note that can go to the speech-to-text screen. F
 After the recording has been saved the user can head over to the Notes screen where all previous and new notes are shown. The user can then tap on the note to be able to view the recording.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./assets/Notesscreen.png" alt="Image 3" width="300" style="margin-right: 10px;">
-  <img src="./assets/Detailscreen1.png" alt="Image 3" width="300">
+  <img src="./assets/Notesscreen.jpg" alt="Notesscreen" width="300" style="margin-right: 10px;">
+   <img src="./assets/Detailscreen1.jpg" alt="Detailscreen1" width="300" style="margin-right: 10px;">
 </div>
 
 ### Feature 3: Sumirize the text that came from the recording.
@@ -186,15 +177,15 @@ After the recording has been saved the user can head over to the Notes screen wh
 At the bottom of the Note's details page there is a sumarize note's text button which if the taps the text will be sumirized and saved.
 
 <div style="display: flex; justify-content: space-between;">
-  <img src="./assets/Detailscreen1.png" alt="Image 5" width="300" style="margin-right: 10px;">
-  <img src="./assets/Detailscreen2.png" alt="Image 6" width="300">
+  <img src="./assets/Detailscreen1.jpg" alt="Detailscreen1" width="300" style="margin-right: 10px;">
+  <img src="./assets/Detailscreen2.jpg" alt="Detailscreen2" width="300">
 </div>
 
 ### Feature 5: Name Notes.
 
 When the recording is saved it take the time stamp of when the recording was made and uses that as a defult title. In the note's detail a user can give the note a title which will then be saved and show on the Notes screen.
 
-<img src="./assets/Detailscreen1.png" alt="Image 7" width="300">
+<img src="./assets/Detailscreen2.jpg" alt="Detailscreen2" width="300">
 
 
 <!-- CONCEPT PROCESS -->
@@ -202,20 +193,6 @@ When the recording is saved it take the time stamp of when the recording was mad
 ## Concept Process
 
 Baised on the brief requirements we had to create an project using any language and application that uses at least one AI service from any avalible sources. I choose to use Google Cloud's Speech-to-text API and OpenAI for as a sumirizing model. I also used Firebase as my backend where my transcrips from the recording are saved.  
-
-### Wireframes
-
-<div style="display: flex; justify-content: space-between; align-items: flex-start;">
-  <img src="./assets/Wireframe1.png" alt="Image 5" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframe2.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframe3.png" alt="Image 6" height="300">
-</div>
-<br>
-<div style="display: flex; justify-content: space-between; align-items: flex-start;">
-  <img src="./assets/Wireframe4.png" alt="Image 6" height="300" style="margin-right: 10px;">
-  <img src="./assets/Wireframe5.png" alt="Image 6" height="300" style="margin-right: 10px;">
-</div>
-<br>
 
 <!-- DEVELOPMENT PROCESS -->
 ## Development Process
@@ -238,9 +215,9 @@ The `Development Process` is the technical implementations and functionality don
 #### Challenges
 <!-- stipulated the challenges you faced with the project and why you think you faced it or how you think you'll solve it (if not solved) -->
 * Struggled to get Google Cloud's API to work. Manged to fix it by the help of a [video](https://youtu.be/gcZSlMU-n48?si=RzFVfPWr3QCnmTGc) I decoved on YouTube.
-* At some point my project refused to open up the app and kept giving me a screen that says "Welcome to expo start by creating a file in the app directory". Unable to figure out why it kept giving me this screen so I redid my project which was when i got it working again.
-* Before my Peer Testing session my app wouldn't open on my Android device so i had to set up an Emulator using [Android studio](https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwjqi6bJ3MyJAxUmj1AGHXOzNjQYABAAGgJkZw&co=1&ase=2&gclid=Cj0KCQiAire5BhCNARIsAM53K1gdHGS-QAtS-v-7uR-4k56doaw6bfsbqoh45-v_D9SMfmjFnPZQLEUaAhpHEALw_wcB&ohost=www.google.com&cid=CAESVOD278duZ_jcHnvq7EjcvIgK0JOEk9-IgyRf_TFwG_-jbrzS-KkgmyZMGZqlAU3KcIISjH5RotS_SA3EaiRz0Ne2-o3dKE060GWC1FNwJIFMIZM0XA&sig=AOD64_39r_E1W9-t1iBDvvuWF39Wjk01pw&q&nis=4&adurl&ved=2ahUKEwjE7qDJ3MyJAxVnVUEAHR-5F84Q0Qx6BAgKEAE).
-* After getting the emulator to show my project I ran into trouble to get the speech-to-text function to work. Sometimes it work and sometimes it doesn't. Unsure of why that is because i know it works perfectly on my physical device before I was unable to open it up.
+* At some point my project refused to open up the app and kept giving me a screen that says "Welcome to expo start by creating a file in the app directory". Unable to figure out why it kept giving me this screen so I redid my project which was when I got it working again.
+* Before my Peer Testing session my app wouldn't open on my Android device so I had to set up an Emulator using [Android studio](https://www.googleadservices.com/pagead/aclk?sa=L&ai=DChcSEwjqi6bJ3MyJAxUmj1AGHXOzNjQYABAAGgJkZw&co=1&ase=2&gclid=Cj0KCQiAire5BhCNARIsAM53K1gdHGS-QAtS-v-7uR-4k56doaw6bfsbqoh45-v_D9SMfmjFnPZQLEUaAhpHEALw_wcB&ohost=www.google.com&cid=CAESVOD278duZ_jcHnvq7EjcvIgK0JOEk9-IgyRf_TFwG_-jbrzS-KkgmyZMGZqlAU3KcIISjH5RotS_SA3EaiRz0Ne2-o3dKE060GWC1FNwJIFMIZM0XA&sig=AOD64_39r_E1W9-t1iBDvvuWF39Wjk01pw&q&nis=4&adurl&ved=2ahUKEwjE7qDJ3MyJAxVnVUEAHR-5F84Q0Qx6BAgKEAE).
+* After getting the emulator to show my project I ran into trouble to get the speech-to-text function to work. Sometimes it work and sometimes it doesn't. Unsure of why that is because I know it works perfectly on my physical device before I was unable to open it up.
 
 ### Reviews & Testing
 <!-- stipulate how you've conducted testing in the form of peer reviews, feedback and also functionality testing, like unit tests (if applicable) -->
@@ -260,18 +237,14 @@ The `Development Process` is the technical implementations and functionality don
 
 <div style="display: flex; justify-content: space-between;">
    <img src="./assets/Splash.png" alt="Image 5" width="300" style="margin-right: 50px;">
-   <img src="./assets/Notes.png" alt="Image 6" width="300">
-  
+   <img src="./assets/Recording.png" alt="Image 6" width="300" style="margin-right: 50px;">
+   <img src="./assets/Info.png" alt="Image 5" width="300">
 </div>
 <br>
 <div style="display: flex; justify-content: space-between;">
+   <img src="./assets/Notes.png" alt="Image 6" width="300" style="margin-right: 50px;">
    <img src="./assets/Detail1.png" alt="Image 6" width="300" style="margin-right: 50px;">
    <img src="./assets/Detail2.png" alt="Image 6" width="300">
-</div>
-<br>
-<div style="display: flex; justify-content: space-between;">
-   <img src="./assets/Record1.png" alt="Image 6" width="300" style="margin-right: 50px;">
-   <img src="./assets/Record2.png" alt="Image 5" width="300">
 </div>
 
 <!-- VIDEO DEMONSTRATION -->
@@ -279,9 +252,14 @@ The `Development Process` is the technical implementations and functionality don
 
 To see a run through of the application, click below:
 
-<a href="https://drive.google.com/file/d/1n4IlwFa47O2MTfharTasSnoHsR_LIJXd/view?usp=sharing">
+<a href="https://drive.google.com/file/d/14GdS8aqaAuVTwbDOobOjcbv0RLrwf0p6/view?usp=sharing">
   <img src="./assets/Splash.png" alt="Image 5" width="300">
 </a>
+
+<!-- Conclusion -->
+## Conclusion
+For further added feature I could implementation a scan-to-summarize using Google Cloud's Document AI to allow a user to upload photos to be sumarized. As well as add a sign up and login screens to personalize the app for a user. 
+
 
 <!-- AUTHORS -->
 ## Authors
