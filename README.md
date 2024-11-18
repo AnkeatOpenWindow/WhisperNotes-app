@@ -78,32 +78,6 @@ Follow these instructions to set up the project locally for development and test
 
 Ensure you have the latest version of [Node.js](https://nodejs.org/en) installed.
 
-### Environment Setup
-
-Before installing packages, create `.env` files in the root folder (where the `functions` folder is) and in the `WhisperNotes` folder.
-
-1. **.env file in root folder**: </br>
-   ```sh
-   GOOGLE_SPEECH_TO_TEXT_API_KEY=YOUR_SPEECH_TO_TEXT_API_KEY
-   OPENAI_API_KEY=YOUR_OPENAI_API_KEY
-   ```
-    Replays `YOUR_SPEECH_TO_TEXT_API_KEY` with your API key you got from Google Cloud after creating an API key and enabling Speech-to-text. <br />
-    Also replacys `YOUR_OPENAI_API_KEY` with the API key you got from OpenAI.
-2. **.env file in WhisperNotes folder**: </br>
-   ```sh
-   GOOGLE_SPEECH_TO_TEXT_API_KEY=YOUR_SPEECH_TO_TEXT_API_KEY
-   OPENAI_API_KEY=YOUR_OPENAI_API_KEY
-   EXPO_PUBLIC_LOCAL_DEV_IP=YOUR_LOCAL_DEV_IP
-   ```
-   Replays `YOUR_SPEECH_TO_TEXT_API_KEY` with your API key you got from Google Cloud after creating an API key and enabling Speech-to-text. <br />
-   Also replacys `YOUR_OPENAI_API_KEY` with the API key you got from OpenAI.<br />
-   Replace `YOUR_LOCAL_DEV_IP` with your device’s local IP address, which helps in development if you’re using a local network.
-3. **expo-env.d.ts file**: </br>
-```typescript
-/// <reference types="expo/types" />
-// NOTE: This file should not be edited and should be in your git ignore
-```
-
 ### How to install
 
 ### Installation
@@ -114,38 +88,92 @@ Run the following in the command-line to clone the project:
    ```sh
    git clone https://github.com/AnkeatOpenWindow/WhisperNotes-app.git
    ```
-2. Install Dependencies in Root folder </br>
+2.  Create a .env file in root folder: </br>
+   ```sh
+      GOOGLE_SPEECH_TO_TEXT_API_KEY=YOUR_SPEECH_TO_TEXT_API_KEY
+      OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+   ```
+    
+   Replays `YOUR_SPEECH_TO_TEXT_API_KEY` with your API key you got from Google Cloud after creating an API key and enabling Speech-to-text. 
+   Also replacys `YOUR_OPENAI_API_KEY` with the API key you got from OpenAI.
+
+3. Create a .env file in `WhisperNotes` folder </br>
+   ```sh
+   GOOGLE_SPEECH_TO_TEXT_API_KEY=YOUR_SPEECH_TO_TEXT_API_KEY
+   OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+   EXPO_PUBLIC_LOCAL_DEV_IP=YOUR_LOCAL_DEV_IP
+   ```
+   Replays `YOUR_SPEECH_TO_TEXT_API_KEY` with your API key you got from Google Cloud after creating an API key and enabling Speech-to-text. <br />
+   Also replacys `YOUR_OPENAI_API_KEY` with the API key you got from OpenAI.<br />
+   Replace `YOUR_LOCAL_DEV_IP` with your device’s local IP address, which helps in development if you’re using a local network.
+
+4. Create a expo-env.d.ts file in `WhisperNotes` folder </br>
+```typescript
+/// <reference types="expo/types" />
+// NOTE: This file should not be edited and should be in your git ignore
+```
+5. Add a `firebase.js` file in the `WhisperNotes` folder and added the following </br>
+    ```sh
+   
+    import { initializeApp } from "firebase/app";
+    import { initializeAuth, getAuth, getReactNativePersistence } from "firebase/auth";
+    import { getFirestore } from "firebase/firestore";
+    import { getStorage } from "firebase/storage";
+    import AsyncStorage from '@react-native-async-storage/async-storage';
+
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID",
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+
+    // Initialize Firebase Auth with persistence
+    const auth = initializeAuth(app, {
+      persistence: getReactNativePersistence(AsyncStorage)
+    });
+
+    // Export auth, db, and storage
+    export { auth };
+    export const db = getFirestore(app);
+    export const storage = getStorage(app);
+
+   ```
+The be sure to replace the `firebaseConfig` with your firebaseConfig from firebase.
+
+6. Install Dependencies in Root folder </br>
 Run the following in the command-line to install all the required dependencies:
    ```sh
    npm install
    ```
-3. Navigate to the Project Directory
-Once the repository is cloned, navigate into the project directory:
-   ```sh
-   cd WhisperNotes
-   ```
-4. Install Dependencies </br>
+7. Install Dependencies in `WhisperNotes` folder </br>
 Run the following in the command-line to install all the required dependencies:
    ```sh
    npm install
    ```
-5. Install React Native CLI
+8. Install React Native CLI
 If you haven't already, you need to install the React Native CLI globally
    ```sh
    npm install -g react-native-cli
    ```
-6. Start the Expo Development Server
+9. Start the Expo Development Server
 Start the Expo development server by running:
    ```sh
    npx expo start
    ```
-7: Running the App with Expo Go
+10: Running the App with Expo Go
 
-  7.1 Download and install the Expo Go app from the App Store (iOS) or Google Play Store (Android) on your mobile device.
+  10.1 Download and install the Expo Go app from the App Store (iOS) or Google Play Store (Android) on your mobile device.
   
-  7.2 Open the Expo Go app on your device.
+  10.2 Open the Expo Go app on your device.
   
-  7.3 In the Expo Dev Tools in your browser, you will see a QR code. Scan this QR code using the Expo Go app.
+  10.3 In the Expo Dev Tools in your browser, you will see a QR code. Scan this QR code using the Expo Go app.
   
   * For iOS: Use the camera app to scan the QR code.
   * For Android: Use the built-in QR code scanner in the Expo Go app.
